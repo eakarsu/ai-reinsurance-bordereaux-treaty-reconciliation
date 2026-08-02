@@ -1,0 +1,1303 @@
+{
+  "id": "ai-reinsurance-bordereaux-treaty-reconciliation",
+  "title": "TreatyLedger Reinsurance Operations",
+  "tagline": "Bordereaux ingestion, treaty terms, premium and loss reconciliation, recoverables, and collateral",
+  "industry": "Reinsurance Operations",
+  "port": 4526,
+  "accent": "#9333ea",
+  "valueLabel": "Ceded exposure",
+  "value": "$1.7B",
+  "workflows": [
+    {
+      "id": "bordereaux",
+      "title": "Bordereaux Ingestion & Validation",
+      "description": "Normalize premium and loss bordereaux, contract references, currencies, periods, and data quality.",
+      "fields": [
+        {
+          "key": "cedant",
+          "label": "Cedant",
+          "type": "text",
+          "required": true
+        },
+        {
+          "key": "bordereauType",
+          "label": "Bordereau Type",
+          "type": "select",
+          "required": true,
+          "options": [
+            "Premium",
+            "Loss",
+            "Exposure"
+          ]
+        },
+        {
+          "key": "reportingPeriod",
+          "label": "Reporting Period",
+          "type": "text",
+          "required": true
+        },
+        {
+          "key": "validationErrors",
+          "label": "Validation Errors",
+          "type": "textarea",
+          "required": false
+        }
+      ],
+      "states": [
+        "intake",
+        "analyzing",
+        "review",
+        "approved",
+        "closed"
+      ],
+      "examples": [
+        {
+          "id": "standard",
+          "label": "Fill Standard Case",
+          "values": {
+            "cedant": "Cedant STD-2026-104",
+            "bordereauType": "Loss",
+            "reportingPeriod": "Reporting Period STD-2026-104",
+            "validationErrors": "Complete: source evidence, financial impact, control context, and documented reviewer rationale are available for analysis."
+          }
+        },
+        {
+          "id": "high-risk",
+          "label": "Fill High-Risk Case",
+          "values": {
+            "cedant": "Cedant RISK-2026-227",
+            "bordereauType": "Loss",
+            "reportingPeriod": "Reporting Period RISK-2026-227",
+            "validationErrors": "Critical exception: source evidence, financial impact, control context, and documented reviewer rationale are available for analysis."
+          }
+        },
+        {
+          "id": "exception",
+          "label": "Fill Exception Case",
+          "values": {
+            "cedant": "Cedant EXC-2026-319",
+            "bordereauType": "Loss",
+            "reportingPeriod": "Reporting Period EXC-2026-319",
+            "validationErrors": "Reviewer follow-up: source evidence, financial impact, control context, and documented reviewer rationale are available for analysis."
+          }
+        }
+      ],
+      "aiActions": [
+        {
+          "id": "assess",
+          "label": "Assess Risk & Value"
+        },
+        {
+          "id": "evidence",
+          "label": "Build Evidence Checklist"
+        },
+        {
+          "id": "plan",
+          "label": "Recommend Action Plan"
+        }
+      ]
+    },
+    {
+      "id": "treaty-terms",
+      "title": "Treaty Term Administration",
+      "description": "Structure layers, limits, retentions, shares, reinstatements, commissions, exclusions, and reporting clauses.",
+      "fields": [
+        {
+          "key": "treaty",
+          "label": "Treaty",
+          "type": "text",
+          "required": true
+        },
+        {
+          "key": "treatyType",
+          "label": "Treaty Type",
+          "type": "select",
+          "required": true,
+          "options": [
+            "Quota Share",
+            "Surplus",
+            "Excess of Loss",
+            "Stop Loss"
+          ]
+        },
+        {
+          "key": "limitAmount",
+          "label": "Treaty Limit",
+          "type": "currency",
+          "required": true
+        },
+        {
+          "key": "termNotes",
+          "label": "Term Notes",
+          "type": "textarea",
+          "required": false
+        }
+      ],
+      "states": [
+        "intake",
+        "analyzing",
+        "review",
+        "approved",
+        "closed"
+      ],
+      "examples": [
+        {
+          "id": "standard",
+          "label": "Fill Standard Case",
+          "values": {
+            "treaty": "Treaty STD-2026-104",
+            "treatyType": "Surplus",
+            "limitAmount": 285000,
+            "termNotes": "Complete: source evidence, financial impact, control context, and documented reviewer rationale are available for analysis."
+          }
+        },
+        {
+          "id": "high-risk",
+          "label": "Fill High-Risk Case",
+          "values": {
+            "treaty": "Treaty RISK-2026-227",
+            "treatyType": "Surplus",
+            "limitAmount": 875000,
+            "termNotes": "Critical exception: source evidence, financial impact, control context, and documented reviewer rationale are available for analysis."
+          }
+        },
+        {
+          "id": "exception",
+          "label": "Fill Exception Case",
+          "values": {
+            "treaty": "Treaty EXC-2026-319",
+            "treatyType": "Surplus",
+            "limitAmount": 142500,
+            "termNotes": "Reviewer follow-up: source evidence, financial impact, control context, and documented reviewer rationale are available for analysis."
+          }
+        }
+      ],
+      "aiActions": [
+        {
+          "id": "assess",
+          "label": "Assess Risk & Value"
+        },
+        {
+          "id": "evidence",
+          "label": "Build Evidence Checklist"
+        },
+        {
+          "id": "plan",
+          "label": "Recommend Action Plan"
+        }
+      ]
+    },
+    {
+      "id": "premium",
+      "title": "Ceded Premium Reconciliation",
+      "description": "Reconcile written, earned, ceded, deposit, minimum, adjustment, and reinstatement premium.",
+      "fields": [
+        {
+          "key": "treaty",
+          "label": "Treaty",
+          "type": "text",
+          "required": true
+        },
+        {
+          "key": "grossPremium",
+          "label": "Gross Premium",
+          "type": "currency",
+          "required": true
+        },
+        {
+          "key": "cededPremium",
+          "label": "Ceded Premium",
+          "type": "currency",
+          "required": true
+        },
+        {
+          "key": "calculationNotes",
+          "label": "Calculation Notes",
+          "type": "textarea",
+          "required": false
+        }
+      ],
+      "states": [
+        "intake",
+        "analyzing",
+        "review",
+        "approved",
+        "closed"
+      ],
+      "examples": [
+        {
+          "id": "standard",
+          "label": "Fill Standard Case",
+          "values": {
+            "treaty": "Treaty STD-2026-104",
+            "grossPremium": 285000,
+            "cededPremium": 285000,
+            "calculationNotes": "Complete: source evidence, financial impact, control context, and documented reviewer rationale are available for analysis."
+          }
+        },
+        {
+          "id": "high-risk",
+          "label": "Fill High-Risk Case",
+          "values": {
+            "treaty": "Treaty RISK-2026-227",
+            "grossPremium": 875000,
+            "cededPremium": 875000,
+            "calculationNotes": "Critical exception: source evidence, financial impact, control context, and documented reviewer rationale are available for analysis."
+          }
+        },
+        {
+          "id": "exception",
+          "label": "Fill Exception Case",
+          "values": {
+            "treaty": "Treaty EXC-2026-319",
+            "grossPremium": 142500,
+            "cededPremium": 142500,
+            "calculationNotes": "Reviewer follow-up: source evidence, financial impact, control context, and documented reviewer rationale are available for analysis."
+          }
+        }
+      ],
+      "aiActions": [
+        {
+          "id": "assess",
+          "label": "Assess Risk & Value"
+        },
+        {
+          "id": "evidence",
+          "label": "Build Evidence Checklist"
+        },
+        {
+          "id": "plan",
+          "label": "Recommend Action Plan"
+        }
+      ]
+    },
+    {
+      "id": "recoverable",
+      "title": "Loss Recoverable Calculation",
+      "description": "Calculate paid and case recoverables, attachment, exhaustion, allocation, expenses, and reinstatements.",
+      "fields": [
+        {
+          "key": "claim",
+          "label": "Claim",
+          "type": "text",
+          "required": true
+        },
+        {
+          "key": "grossLoss",
+          "label": "Gross Loss",
+          "type": "currency",
+          "required": true
+        },
+        {
+          "key": "retention",
+          "label": "Retention",
+          "type": "currency",
+          "required": true
+        },
+        {
+          "key": "recoveryNotes",
+          "label": "Recovery Notes",
+          "type": "textarea",
+          "required": false
+        }
+      ],
+      "states": [
+        "intake",
+        "analyzing",
+        "review",
+        "approved",
+        "closed"
+      ],
+      "examples": [
+        {
+          "id": "standard",
+          "label": "Fill Standard Case",
+          "values": {
+            "claim": "CLM-2026-001842",
+            "grossLoss": 285000,
+            "retention": 285000,
+            "recoveryNotes": "Complete: source evidence, financial impact, control context, and documented reviewer rationale are available for analysis."
+          }
+        },
+        {
+          "id": "high-risk",
+          "label": "Fill High-Risk Case",
+          "values": {
+            "claim": "CLM-2026-004917",
+            "grossLoss": 875000,
+            "retention": 875000,
+            "recoveryNotes": "Critical exception: source evidence, financial impact, control context, and documented reviewer rationale are available for analysis."
+          }
+        },
+        {
+          "id": "exception",
+          "label": "Fill Exception Case",
+          "values": {
+            "claim": "CLM-2026-007305",
+            "grossLoss": 142500,
+            "retention": 142500,
+            "recoveryNotes": "Reviewer follow-up: source evidence, financial impact, control context, and documented reviewer rationale are available for analysis."
+          }
+        }
+      ],
+      "aiActions": [
+        {
+          "id": "assess",
+          "label": "Assess Risk & Value"
+        },
+        {
+          "id": "evidence",
+          "label": "Build Evidence Checklist"
+        },
+        {
+          "id": "plan",
+          "label": "Recommend Action Plan"
+        }
+      ]
+    },
+    {
+      "id": "cash-call",
+      "title": "Cash Call Management",
+      "description": "Prepare qualifying loss, treaty citation, proof of payment, notice, approval, and collection tracking.",
+      "fields": [
+        {
+          "key": "cashCallId",
+          "label": "Cash Call ID",
+          "type": "text",
+          "required": true
+        },
+        {
+          "key": "treaty",
+          "label": "Treaty",
+          "type": "text",
+          "required": true
+        },
+        {
+          "key": "requestedAmount",
+          "label": "Requested Amount",
+          "type": "currency",
+          "required": true
+        },
+        {
+          "key": "supportNarrative",
+          "label": "Support Narrative",
+          "type": "textarea",
+          "required": false
+        }
+      ],
+      "states": [
+        "intake",
+        "analyzing",
+        "review",
+        "approved",
+        "closed"
+      ],
+      "examples": [
+        {
+          "id": "standard",
+          "label": "Fill Standard Case",
+          "values": {
+            "cashCallId": "Cash Call ID STD-2026-104",
+            "treaty": "Treaty STD-2026-104",
+            "requestedAmount": 285000,
+            "supportNarrative": "Complete: source evidence, financial impact, control context, and documented reviewer rationale are available for analysis."
+          }
+        },
+        {
+          "id": "high-risk",
+          "label": "Fill High-Risk Case",
+          "values": {
+            "cashCallId": "Cash Call ID RISK-2026-227",
+            "treaty": "Treaty RISK-2026-227",
+            "requestedAmount": 875000,
+            "supportNarrative": "Critical exception: source evidence, financial impact, control context, and documented reviewer rationale are available for analysis."
+          }
+        },
+        {
+          "id": "exception",
+          "label": "Fill Exception Case",
+          "values": {
+            "cashCallId": "Cash Call ID EXC-2026-319",
+            "treaty": "Treaty EXC-2026-319",
+            "requestedAmount": 142500,
+            "supportNarrative": "Reviewer follow-up: source evidence, financial impact, control context, and documented reviewer rationale are available for analysis."
+          }
+        }
+      ],
+      "aiActions": [
+        {
+          "id": "assess",
+          "label": "Assess Risk & Value"
+        },
+        {
+          "id": "evidence",
+          "label": "Build Evidence Checklist"
+        },
+        {
+          "id": "plan",
+          "label": "Recommend Action Plan"
+        }
+      ]
+    },
+    {
+      "id": "collateral",
+      "title": "Collateral Sufficiency",
+      "description": "Monitor trust, letters of credit, funds withheld, credit for reinsurance, and required collateral.",
+      "fields": [
+        {
+          "key": "reinsurer",
+          "label": "Reinsurer",
+          "type": "text",
+          "required": true
+        },
+        {
+          "key": "recoverable",
+          "label": "Recoverable",
+          "type": "currency",
+          "required": true
+        },
+        {
+          "key": "collateralHeld",
+          "label": "Collateral Held",
+          "type": "currency",
+          "required": true
+        },
+        {
+          "key": "collateralNotes",
+          "label": "Collateral Notes",
+          "type": "textarea",
+          "required": false
+        }
+      ],
+      "states": [
+        "intake",
+        "analyzing",
+        "review",
+        "approved",
+        "closed"
+      ],
+      "examples": [
+        {
+          "id": "standard",
+          "label": "Fill Standard Case",
+          "values": {
+            "reinsurer": "Reinsurer STD-2026-104",
+            "recoverable": 285000,
+            "collateralHeld": 285000,
+            "collateralNotes": "Complete: source evidence, financial impact, control context, and documented reviewer rationale are available for analysis."
+          }
+        },
+        {
+          "id": "high-risk",
+          "label": "Fill High-Risk Case",
+          "values": {
+            "reinsurer": "Reinsurer RISK-2026-227",
+            "recoverable": 875000,
+            "collateralHeld": 875000,
+            "collateralNotes": "Critical exception: source evidence, financial impact, control context, and documented reviewer rationale are available for analysis."
+          }
+        },
+        {
+          "id": "exception",
+          "label": "Fill Exception Case",
+          "values": {
+            "reinsurer": "Reinsurer EXC-2026-319",
+            "recoverable": 142500,
+            "collateralHeld": 142500,
+            "collateralNotes": "Reviewer follow-up: source evidence, financial impact, control context, and documented reviewer rationale are available for analysis."
+          }
+        }
+      ],
+      "aiActions": [
+        {
+          "id": "assess",
+          "label": "Assess Risk & Value"
+        },
+        {
+          "id": "evidence",
+          "label": "Build Evidence Checklist"
+        },
+        {
+          "id": "plan",
+          "label": "Recommend Action Plan"
+        }
+      ]
+    },
+    {
+      "id": "commutation",
+      "title": "Commutation Analysis",
+      "description": "Model carried recoverables, future cash flows, expenses, credit risk, settlement, and accounting impact.",
+      "fields": [
+        {
+          "key": "counterparty",
+          "label": "Counterparty",
+          "type": "text",
+          "required": true
+        },
+        {
+          "key": "carriedRecoverable",
+          "label": "Carried Recoverable",
+          "type": "currency",
+          "required": true
+        },
+        {
+          "key": "offerAmount",
+          "label": "Commutation Offer",
+          "type": "currency",
+          "required": true
+        },
+        {
+          "key": "analysisNotes",
+          "label": "Analysis Notes",
+          "type": "textarea",
+          "required": false
+        }
+      ],
+      "states": [
+        "intake",
+        "analyzing",
+        "review",
+        "approved",
+        "closed"
+      ],
+      "examples": [
+        {
+          "id": "standard",
+          "label": "Fill Standard Case",
+          "values": {
+            "counterparty": "Counterparty STD-2026-104",
+            "carriedRecoverable": 285000,
+            "offerAmount": 285000,
+            "analysisNotes": "Complete: source evidence, financial impact, control context, and documented reviewer rationale are available for analysis."
+          }
+        },
+        {
+          "id": "high-risk",
+          "label": "Fill High-Risk Case",
+          "values": {
+            "counterparty": "Counterparty RISK-2026-227",
+            "carriedRecoverable": 875000,
+            "offerAmount": 875000,
+            "analysisNotes": "Critical exception: source evidence, financial impact, control context, and documented reviewer rationale are available for analysis."
+          }
+        },
+        {
+          "id": "exception",
+          "label": "Fill Exception Case",
+          "values": {
+            "counterparty": "Counterparty EXC-2026-319",
+            "carriedRecoverable": 142500,
+            "offerAmount": 142500,
+            "analysisNotes": "Reviewer follow-up: source evidence, financial impact, control context, and documented reviewer rationale are available for analysis."
+          }
+        }
+      ],
+      "aiActions": [
+        {
+          "id": "assess",
+          "label": "Assess Risk & Value"
+        },
+        {
+          "id": "evidence",
+          "label": "Build Evidence Checklist"
+        },
+        {
+          "id": "plan",
+          "label": "Recommend Action Plan"
+        }
+      ]
+    },
+    {
+      "id": "schedule-f",
+      "title": "Schedule F Reconciliation",
+      "description": "Tie reinsurer balances, ceded premium, paid and unpaid recoverables, payables, collateral, and aging.",
+      "fields": [
+        {
+          "key": "reinsurer",
+          "label": "Reinsurer",
+          "type": "text",
+          "required": true
+        },
+        {
+          "key": "naicCode",
+          "label": "NAIC Code",
+          "type": "text",
+          "required": true
+        },
+        {
+          "key": "netRecoverable",
+          "label": "Net Recoverable",
+          "type": "currency",
+          "required": true
+        },
+        {
+          "key": "reconciliationNotes",
+          "label": "Reconciliation Notes",
+          "type": "textarea",
+          "required": false
+        }
+      ],
+      "states": [
+        "intake",
+        "analyzing",
+        "review",
+        "approved",
+        "closed"
+      ],
+      "examples": [
+        {
+          "id": "standard",
+          "label": "Fill Standard Case",
+          "values": {
+            "reinsurer": "Reinsurer STD-2026-104",
+            "naicCode": "NAIC Code STD-2026-104",
+            "netRecoverable": 285000,
+            "reconciliationNotes": "Complete: source evidence, financial impact, control context, and documented reviewer rationale are available for analysis."
+          }
+        },
+        {
+          "id": "high-risk",
+          "label": "Fill High-Risk Case",
+          "values": {
+            "reinsurer": "Reinsurer RISK-2026-227",
+            "naicCode": "NAIC Code RISK-2026-227",
+            "netRecoverable": 875000,
+            "reconciliationNotes": "Critical exception: source evidence, financial impact, control context, and documented reviewer rationale are available for analysis."
+          }
+        },
+        {
+          "id": "exception",
+          "label": "Fill Exception Case",
+          "values": {
+            "reinsurer": "Reinsurer EXC-2026-319",
+            "naicCode": "NAIC Code EXC-2026-319",
+            "netRecoverable": 142500,
+            "reconciliationNotes": "Reviewer follow-up: source evidence, financial impact, control context, and documented reviewer rationale are available for analysis."
+          }
+        }
+      ],
+      "aiActions": [
+        {
+          "id": "assess",
+          "label": "Assess Risk & Value"
+        },
+        {
+          "id": "evidence",
+          "label": "Build Evidence Checklist"
+        },
+        {
+          "id": "plan",
+          "label": "Recommend Action Plan"
+        }
+      ]
+    }
+  ],
+  "operations": [
+    {
+      "id": "bordereaux",
+      "title": "Bordereaux Ingestion & Validation Register",
+      "description": "Operational records, ownership, status, financial value, and evidence for bordereaux ingestion & validation.",
+      "table": "op_bordereaux",
+      "columns": [
+        {
+          "key": "cedant",
+          "label": "Cedant",
+          "type": "text",
+          "required": true,
+          "dbKey": "data_cedant"
+        },
+        {
+          "key": "bordereauType",
+          "label": "Bordereau Type",
+          "type": "select",
+          "required": true,
+          "options": [
+            "Premium",
+            "Loss",
+            "Exposure"
+          ],
+          "dbKey": "data_bordereauType"
+        },
+        {
+          "key": "reportingPeriod",
+          "label": "Reporting Period",
+          "type": "text",
+          "required": true,
+          "dbKey": "data_reportingPeriod"
+        },
+        {
+          "key": "validationErrors",
+          "label": "Validation Errors",
+          "type": "textarea",
+          "required": false,
+          "dbKey": "data_validationErrors"
+        }
+      ]
+    },
+    {
+      "id": "treaty-terms",
+      "title": "Treaty Term Administration Register",
+      "description": "Operational records, ownership, status, financial value, and evidence for treaty term administration.",
+      "table": "op_treaty_terms",
+      "columns": [
+        {
+          "key": "treaty",
+          "label": "Treaty",
+          "type": "text",
+          "required": true,
+          "dbKey": "data_treaty"
+        },
+        {
+          "key": "treatyType",
+          "label": "Treaty Type",
+          "type": "select",
+          "required": true,
+          "options": [
+            "Quota Share",
+            "Surplus",
+            "Excess of Loss",
+            "Stop Loss"
+          ],
+          "dbKey": "data_treatyType"
+        },
+        {
+          "key": "limitAmount",
+          "label": "Treaty Limit",
+          "type": "currency",
+          "required": true,
+          "dbKey": "data_limitAmount"
+        },
+        {
+          "key": "termNotes",
+          "label": "Term Notes",
+          "type": "textarea",
+          "required": false,
+          "dbKey": "data_termNotes"
+        }
+      ]
+    },
+    {
+      "id": "premium",
+      "title": "Ceded Premium Reconciliation Register",
+      "description": "Operational records, ownership, status, financial value, and evidence for ceded premium reconciliation.",
+      "table": "op_premium",
+      "columns": [
+        {
+          "key": "treaty",
+          "label": "Treaty",
+          "type": "text",
+          "required": true,
+          "dbKey": "data_treaty"
+        },
+        {
+          "key": "grossPremium",
+          "label": "Gross Premium",
+          "type": "currency",
+          "required": true,
+          "dbKey": "data_grossPremium"
+        },
+        {
+          "key": "cededPremium",
+          "label": "Ceded Premium",
+          "type": "currency",
+          "required": true,
+          "dbKey": "data_cededPremium"
+        },
+        {
+          "key": "calculationNotes",
+          "label": "Calculation Notes",
+          "type": "textarea",
+          "required": false,
+          "dbKey": "data_calculationNotes"
+        }
+      ]
+    },
+    {
+      "id": "recoverable",
+      "title": "Loss Recoverable Calculation Register",
+      "description": "Operational records, ownership, status, financial value, and evidence for loss recoverable calculation.",
+      "table": "op_recoverable",
+      "columns": [
+        {
+          "key": "claim",
+          "label": "Claim",
+          "type": "text",
+          "required": true,
+          "dbKey": "data_claim"
+        },
+        {
+          "key": "grossLoss",
+          "label": "Gross Loss",
+          "type": "currency",
+          "required": true,
+          "dbKey": "data_grossLoss"
+        },
+        {
+          "key": "retention",
+          "label": "Retention",
+          "type": "currency",
+          "required": true,
+          "dbKey": "data_retention"
+        },
+        {
+          "key": "recoveryNotes",
+          "label": "Recovery Notes",
+          "type": "textarea",
+          "required": false,
+          "dbKey": "data_recoveryNotes"
+        }
+      ]
+    },
+    {
+      "id": "cash-call",
+      "title": "Cash Call Management Register",
+      "description": "Operational records, ownership, status, financial value, and evidence for cash call management.",
+      "table": "op_cash_call",
+      "columns": [
+        {
+          "key": "cashCallId",
+          "label": "Cash Call ID",
+          "type": "text",
+          "required": true,
+          "dbKey": "data_cashCallId"
+        },
+        {
+          "key": "treaty",
+          "label": "Treaty",
+          "type": "text",
+          "required": true,
+          "dbKey": "data_treaty"
+        },
+        {
+          "key": "requestedAmount",
+          "label": "Requested Amount",
+          "type": "currency",
+          "required": true,
+          "dbKey": "data_requestedAmount"
+        },
+        {
+          "key": "supportNarrative",
+          "label": "Support Narrative",
+          "type": "textarea",
+          "required": false,
+          "dbKey": "data_supportNarrative"
+        }
+      ]
+    },
+    {
+      "id": "collateral",
+      "title": "Collateral Sufficiency Register",
+      "description": "Operational records, ownership, status, financial value, and evidence for collateral sufficiency.",
+      "table": "op_collateral",
+      "columns": [
+        {
+          "key": "reinsurer",
+          "label": "Reinsurer",
+          "type": "text",
+          "required": true,
+          "dbKey": "data_reinsurer"
+        },
+        {
+          "key": "recoverable",
+          "label": "Recoverable",
+          "type": "currency",
+          "required": true,
+          "dbKey": "data_recoverable"
+        },
+        {
+          "key": "collateralHeld",
+          "label": "Collateral Held",
+          "type": "currency",
+          "required": true,
+          "dbKey": "data_collateralHeld"
+        },
+        {
+          "key": "collateralNotes",
+          "label": "Collateral Notes",
+          "type": "textarea",
+          "required": false,
+          "dbKey": "data_collateralNotes"
+        }
+      ]
+    },
+    {
+      "id": "commutation",
+      "title": "Commutation Analysis Register",
+      "description": "Operational records, ownership, status, financial value, and evidence for commutation analysis.",
+      "table": "op_commutation",
+      "columns": [
+        {
+          "key": "counterparty",
+          "label": "Counterparty",
+          "type": "text",
+          "required": true,
+          "dbKey": "data_counterparty"
+        },
+        {
+          "key": "carriedRecoverable",
+          "label": "Carried Recoverable",
+          "type": "currency",
+          "required": true,
+          "dbKey": "data_carriedRecoverable"
+        },
+        {
+          "key": "offerAmount",
+          "label": "Commutation Offer",
+          "type": "currency",
+          "required": true,
+          "dbKey": "data_offerAmount"
+        },
+        {
+          "key": "analysisNotes",
+          "label": "Analysis Notes",
+          "type": "textarea",
+          "required": false,
+          "dbKey": "data_analysisNotes"
+        }
+      ]
+    },
+    {
+      "id": "schedule-f",
+      "title": "Schedule F Reconciliation Register",
+      "description": "Operational records, ownership, status, financial value, and evidence for schedule f reconciliation.",
+      "table": "op_schedule_f",
+      "columns": [
+        {
+          "key": "reinsurer",
+          "label": "Reinsurer",
+          "type": "text",
+          "required": true,
+          "dbKey": "data_reinsurer"
+        },
+        {
+          "key": "naicCode",
+          "label": "NAIC Code",
+          "type": "text",
+          "required": true,
+          "dbKey": "data_naicCode"
+        },
+        {
+          "key": "netRecoverable",
+          "label": "Net Recoverable",
+          "type": "currency",
+          "required": true,
+          "dbKey": "data_netRecoverable"
+        },
+        {
+          "key": "reconciliationNotes",
+          "label": "Reconciliation Notes",
+          "type": "textarea",
+          "required": false,
+          "dbKey": "data_reconciliationNotes"
+        }
+      ]
+    },
+    {
+      "id": "treaty-register",
+      "title": "Treaty Register",
+      "description": "Treaties, sections, periods, layers, shares, limits, retentions, and brokers.",
+      "table": "op_treaty_register",
+      "columns": [
+        {
+          "key": "treaty",
+          "label": "Treaty",
+          "type": "text",
+          "required": true,
+          "dbKey": "data_treaty"
+        },
+        {
+          "key": "section",
+          "label": "Section",
+          "type": "text",
+          "required": true,
+          "dbKey": "data_section"
+        },
+        {
+          "key": "limitAmount",
+          "label": "Limit",
+          "type": "currency",
+          "required": true,
+          "dbKey": "data_limitAmount"
+        },
+        {
+          "key": "retention",
+          "label": "Retention",
+          "type": "currency",
+          "required": true,
+          "dbKey": "data_retention"
+        }
+      ]
+    },
+    {
+      "id": "counterparty-master",
+      "title": "Reinsurer & Cedant Master",
+      "description": "Counterparties, identifiers, ratings, domicile, collateral status, and contacts.",
+      "table": "op_counterparty_master",
+      "columns": [
+        {
+          "key": "counterparty",
+          "label": "Counterparty",
+          "type": "text",
+          "required": true,
+          "dbKey": "data_counterparty"
+        },
+        {
+          "key": "role",
+          "label": "Role",
+          "type": "text",
+          "required": true,
+          "dbKey": "data_role"
+        },
+        {
+          "key": "rating",
+          "label": "Financial Strength Rating",
+          "type": "text",
+          "required": true,
+          "dbKey": "data_rating"
+        },
+        {
+          "key": "domicile",
+          "label": "Domicile",
+          "type": "text",
+          "required": true,
+          "dbKey": "data_domicile"
+        }
+      ]
+    },
+    {
+      "id": "claim-register",
+      "title": "Ceded Claim Register",
+      "description": "Claims, events, dates, gross loss, treaty allocation, notices, and recoverables.",
+      "table": "op_claim_register",
+      "columns": [
+        {
+          "key": "claim",
+          "label": "Claim",
+          "type": "text",
+          "required": true,
+          "dbKey": "data_claim"
+        },
+        {
+          "key": "event",
+          "label": "Event",
+          "type": "text",
+          "required": true,
+          "dbKey": "data_event"
+        },
+        {
+          "key": "grossLoss",
+          "label": "Gross Loss",
+          "type": "currency",
+          "required": true,
+          "dbKey": "data_grossLoss"
+        },
+        {
+          "key": "eventDate",
+          "label": "Event Date",
+          "type": "date",
+          "required": true,
+          "dbKey": "data_eventDate"
+        }
+      ]
+    },
+    {
+      "id": "currency-register",
+      "title": "Currency & Settlement Register",
+      "description": "Currencies, treaty currency, rates, settlement periods, and payment instructions.",
+      "table": "op_currency_register",
+      "columns": [
+        {
+          "key": "currency",
+          "label": "Currency",
+          "type": "text",
+          "required": true,
+          "dbKey": "data_currency"
+        },
+        {
+          "key": "settlementCurrency",
+          "label": "Settlement Currency",
+          "type": "text",
+          "required": true,
+          "dbKey": "data_settlementCurrency"
+        },
+        {
+          "key": "exchangeRate",
+          "label": "Exchange Rate",
+          "type": "number",
+          "required": true,
+          "dbKey": "data_exchangeRate"
+        },
+        {
+          "key": "settlementCycle",
+          "label": "Settlement Cycle",
+          "type": "text",
+          "required": true,
+          "dbKey": "data_settlementCycle"
+        }
+      ]
+    }
+  ],
+  "domainProduct": {
+    "home": "Reinsurance Technical Accounting",
+    "context": "A ceded-reinsurance system for bordereaux, treaty terms, premiums, loss recoverables, cash calls, collateral, and Schedule F.",
+    "features": [
+      {
+        "id": "bordereaux-control",
+        "title": "Bordereaux Data Control",
+        "description": "Validate cedant files, contract mapping, periods, currencies, exposures, premium, loss, and exceptions.",
+        "view": "evidence",
+        "modules": [
+          "bordereaux",
+          "counterparty-master"
+        ],
+        "actions": [
+          {
+            "id": "accept-bordereau",
+            "label": "Accept Bordereau",
+            "nextStatus": "Approved",
+            "auditDetail": "Accepted validated bordereau."
+          },
+          {
+            "id": "reject-bordereau",
+            "label": "Reject Bordereau",
+            "nextStatus": "Investigating",
+            "auditDetail": "Rejected bordereau for data correction."
+          }
+        ]
+      },
+      {
+        "id": "treaty-administration",
+        "title": "Treaty Administration",
+        "description": "Structure sections, layers, shares, retentions, limits, reinstatements, commissions, and exclusions.",
+        "view": "control",
+        "modules": [
+          "treaty-terms",
+          "treaty-register"
+        ],
+        "actions": [
+          {
+            "id": "approve-terms",
+            "label": "Approve Structured Terms",
+            "nextStatus": "Approved",
+            "auditDetail": "Approved structured treaty terms."
+          },
+          {
+            "id": "open-wording",
+            "label": "Open Wording Exception",
+            "nextStatus": "Review",
+            "auditDetail": "Opened treaty wording exception."
+          }
+        ]
+      },
+      {
+        "id": "premium-accounting",
+        "title": "Ceded Premium Accounting",
+        "description": "Reconcile written, earned, deposit, minimum, adjustment, commission, and settlement balances.",
+        "view": "reconciliation",
+        "modules": [
+          "premium",
+          "currency-register"
+        ],
+        "actions": [
+          {
+            "id": "post-premium",
+            "label": "Approve Premium Posting",
+            "nextStatus": "Approved",
+            "auditDetail": "Approved ceded premium posting."
+          },
+          {
+            "id": "open-premium-variance",
+            "label": "Open Premium Variance",
+            "nextStatus": "Investigating",
+            "auditDetail": "Opened ceded premium variance."
+          }
+        ]
+      },
+      {
+        "id": "loss-recovery",
+        "title": "Loss Recoverables & Cash Calls",
+        "description": "Calculate treaty attachment, allocation, expenses, limits, paid recovery, and cash-call evidence.",
+        "view": "reconciliation",
+        "modules": [
+          "recoverable",
+          "cash-call"
+        ],
+        "actions": [
+          {
+            "id": "approve-recovery",
+            "label": "Approve Loss Recovery",
+            "nextStatus": "Approved",
+            "auditDetail": "Approved treaty loss recoverable."
+          },
+          {
+            "id": "issue-cash-call",
+            "label": "Issue Cash Call",
+            "nextStatus": "Review",
+            "auditDetail": "Issued supported reinsurance cash call."
+          }
+        ]
+      },
+      {
+        "id": "credit-collateral",
+        "title": "Counterparty Credit & Schedule F",
+        "description": "Reconcile balances, aging, ratings, collateral, credit for reinsurance, and regulatory reporting.",
+        "view": "board",
+        "modules": [
+          "collateral",
+          "schedule-f"
+        ],
+        "actions": [
+          {
+            "id": "approve-credit",
+            "label": "Approve Credit for Reinsurance",
+            "nextStatus": "Approved",
+            "auditDetail": "Approved collateral and credit-for-reinsurance support."
+          },
+          {
+            "id": "escalate-collateral",
+            "label": "Escalate Collateral Shortfall",
+            "nextStatus": "Investigating",
+            "auditDetail": "Escalated reinsurer collateral shortfall."
+          }
+        ]
+      }
+    ]
+  },
+  "integrations": [
+    {
+      "id": "integration-1",
+      "name": "Bordereaux exchange",
+      "category": "Domain data source",
+      "mode": "Read-only demo connector"
+    },
+    {
+      "id": "integration-2",
+      "name": "Policy administration",
+      "category": "Domain data source",
+      "mode": "Read-only demo connector"
+    },
+    {
+      "id": "integration-3",
+      "name": "Claims system",
+      "category": "Domain data source",
+      "mode": "Read-only demo connector"
+    },
+    {
+      "id": "integration-4",
+      "name": "General ledger",
+      "category": "Domain data source",
+      "mode": "Read-only demo connector"
+    },
+    {
+      "id": "integration-5",
+      "name": "Broker portal",
+      "category": "Domain data source",
+      "mode": "Read-only demo connector"
+    }
+  ],
+  "featureCount": 40,
+  "seededRecords": 300,
+  "demoUsers": 3,
+  "apiPort": 5526,
+  "dbName": "profit_ai_reinsurance_bordereaux_treaty_reconciliation"
+}
