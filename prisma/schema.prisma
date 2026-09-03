@@ -1,0 +1,214 @@
+// Generated schema — modeled after beautyhqio conventions.
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  name         String
+  passwordHash String
+  role         Role     @default(ANALYST)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+enum Role {
+  ADMIN
+  MANAGER
+  ANALYST
+}
+
+model AuditLog {
+  id        String   @id @default(cuid())
+  actorId   String?
+  actorName String?
+  action    String
+  entity    String
+  entityId  String?
+  detail    String?
+  createdAt DateTime @default(now())
+}
+
+model Treaty {
+  id        String   @id @default(cuid())
+  name String
+  reinsurer String
+  type String
+  layer String
+  limitUsd Float
+  cessionPct Float
+  status String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  bordereauRecords BordereauRecord[]
+  cededPremiums CededPremium[]
+  lossRecoverables LossRecoverable[]
+  cashCalls CashCall[]
+  collateralPositions CollateralPosition[]
+  commutationReviews CommutationReview[]
+  scheduleFEntrys ScheduleFEntry[]
+  reinsurerCounterpartys ReinsurerCounterparty[]
+  discrepancyCases DiscrepancyCase[]
+  settlementPayments SettlementPayment[]
+  treatyTerms TreatyTerm[]
+}
+
+model BordereauRecord {
+  id        String   @id @default(cuid())
+  period String
+  kind String
+  rowCount Int
+  fileRef String
+  status String
+  receivedAt DateTime?
+  treatyId String?
+  treaty Treaty? @relation(fields: [treatyId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model CededPremium {
+  id        String   @id @default(cuid())
+  period String
+  grossWritten Float
+  cededAmount Float
+  commission Float
+  currency String
+  status String
+  treatyId String?
+  treaty Treaty? @relation(fields: [treatyId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model LossRecoverable {
+  id        String   @id @default(cuid())
+  claimRef String
+  period String
+  incurredLoss Float
+  recoverable Float
+  status String
+  recognizedAt DateTime?
+  treatyId String?
+  treaty Treaty? @relation(fields: [treatyId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model CashCall {
+  id        String   @id @default(cuid())
+  callRef String
+  amount Float
+  currency String
+  status String
+  issuedAt DateTime?
+  settledAt DateTime?
+  treatyId String?
+  treaty Treaty? @relation(fields: [treatyId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model CollateralPosition {
+  id        String   @id @default(cuid())
+  reinsurer String
+  instrument String
+  requiredAmount Float
+  heldAmount Float
+  status String
+  asOf DateTime?
+  treatyId String?
+  treaty Treaty? @relation(fields: [treatyId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model CommutationReview {
+  id        String   @id @default(cuid())
+  proposalRef String
+  analyst String
+  settlementAmount Float
+  status String
+  proposedAt DateTime?
+  rationale String?
+  treatyId String?
+  treaty Treaty? @relation(fields: [treatyId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model ScheduleFEntry {
+  id        String   @id @default(cuid())
+  naicCode String
+  reinsurerName String
+  part String
+  amount Float
+  status String
+  statementYear String
+  treatyId String?
+  treaty Treaty? @relation(fields: [treatyId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model ReinsurerCounterparty {
+  id        String   @id @default(cuid())
+  name String
+  amBestRating String
+  domicile String
+  status String
+  exposureLimit Float
+  lastReview DateTime?
+  treatyId String?
+  treaty Treaty? @relation(fields: [treatyId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model DiscrepancyCase {
+  id        String   @id @default(cuid())
+  kind String
+  expectedValue String
+  reportedValue String
+  variance Float
+  status String
+  owner String
+  treatyId String?
+  treaty Treaty? @relation(fields: [treatyId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model SettlementPayment {
+  id        String   @id @default(cuid())
+  period String
+  direction String
+  amount Float
+  currency String
+  status String
+  dueDate DateTime?
+  treatyId String?
+  treaty Treaty? @relation(fields: [treatyId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model TreatyTerm {
+  id        String   @id @default(cuid())
+  clause String
+  category String
+  text String
+  version String
+  status String
+  effectiveDate DateTime?
+  treatyId String?
+  treaty Treaty? @relation(fields: [treatyId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
