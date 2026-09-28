@@ -1,0 +1,98 @@
+{
+  "bordereau-validate": [
+    {
+      "id": "example-1",
+      "label": "Missing policy dates",
+      "values": {
+        "treaty": "Example property quota-share treaty",
+        "period": "2026 Q3",
+        "rowCount": "1250",
+        "observedIssues": "23 rows lack inception dates; source schema and actual file needed."
+      }
+    },
+    {
+      "id": "example-2",
+      "label": "Currency mismatch",
+      "values": {
+        "treaty": "Example casualty excess treaty",
+        "period": "2026-08",
+        "rowCount": "680",
+        "observedIssues": "USD and EUR values mixed in one total; reconcile separately."
+      }
+    },
+    {
+      "id": "example-3",
+      "label": "Duplicate rows",
+      "values": {
+        "treaty": "Example marine treaty",
+        "period": "2026-07",
+        "rowCount": "420",
+        "observedIssues": "12 suspected duplicate claim references; distinguish revisions from duplicates."
+      }
+    }
+  ],
+  "recoverable-calc": [
+    {
+      "id": "example-1",
+      "label": "Below attachment",
+      "values": {
+        "incurredLoss": "400000 USD",
+        "attachment": "500000 USD",
+        "limit": "1000000 USD",
+        "cessionPct": "80; example single layer, no reinstatement; computed recovery 0 USD."
+      }
+    },
+    {
+      "id": "example-2",
+      "label": "Partial layer",
+      "values": {
+        "incurredLoss": "1000000 USD",
+        "attachment": "500000 USD",
+        "limit": "1000000 USD",
+        "cessionPct": "80; example single layer, no reinstatement; computed recovery 400000 USD."
+      }
+    },
+    {
+      "id": "example-3",
+      "label": "Exhausted layer",
+      "values": {
+        "incurredLoss": "2500000 USD",
+        "attachment": "500000 USD",
+        "limit": "1000000 USD",
+        "cessionPct": "75; example single layer, no reinstatement; computed recovery 750000 USD."
+      }
+    }
+  ],
+  "collateral-gap": [
+    {
+      "id": "example-1",
+      "label": "Shortfall",
+      "values": {
+        "reinsurer": "Example Reinsurer A",
+        "ceedLiabilities": "2000000 USD",
+        "heldCollateral": "1500000 USD, assumed eligible for this example",
+        "rating": "Example rating A; source date and eligibility require review."
+      }
+    },
+    {
+      "id": "example-2",
+      "label": "Surplus",
+      "values": {
+        "reinsurer": "Example Reinsurer B",
+        "ceedLiabilities": "1250000 USD",
+        "heldCollateral": "1500000 USD, assumed eligible for this example",
+        "rating": "Example rating A-; no statutory determination."
+      }
+    },
+    {
+      "id": "example-3",
+      "label": "Eligibility review",
+      "values": {
+        "reinsurer": "Example Reinsurer C",
+        "ceedLiabilities": "3000000 USD",
+        "heldCollateral": "3200000 USD nominal; 500000 USD eligibility disputed",
+        "rating": "Rating not supplied; request a dated authoritative source."
+      }
+    }
+  ]
+}

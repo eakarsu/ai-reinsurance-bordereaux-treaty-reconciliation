@@ -124,21 +124,21 @@ export const entities: Record<string, EntityConfig> = {
 export const workflows: WorkflowConfig[] = [
   {
     slug: "bordereau-validate",
-    title: "Bordereau Validator",
+    title: "Draft: Bordereau Validator",
     description: "Validate a bordereau against treaty terms.",
     prompt: "You are a reinsurance operations analyst. Validate the described bordereau against treaty scope: line of business, layer, period, exclusions; list exceptions.",
     fields: ["treaty", "period", "rowCount", "observedIssues"],
   },
   {
     slug: "recoverable-calc",
-    title: "Loss Recoverable Calculator",
+    title: "Draft: Loss Recoverable Calculator",
     description: "Compute treaty recoverable for an incurred loss.",
-    prompt: "You are a reinsurance accountant. Compute the treaty recoverable given attachment, limit, cession percentage and reinstatement terms.",
+    prompt: "Explain a supplied deterministic treaty recovery calculation and identify omitted treaty terms. Do not invent reinstatement, aggregate limits, expenses, cession or financial totals.",
     fields: ["incurredLoss", "attachment", "limit", "cessionPct"],
   },
   {
     slug: "collateral-gap",
-    title: "Collateral Gap Monitor",
+    title: "Draft: Collateral Gap Monitor",
     description: "Find reinsurer collateral sufficiency gaps.",
     prompt: "You are a reinsurance credit analyst. Assess collateral sufficiency versus ceded reserves and unauthorized reinsurance exposure for Schedule F.",
     fields: ["reinsurer", "ceedLiabilities", "heldCollateral", "rating"],

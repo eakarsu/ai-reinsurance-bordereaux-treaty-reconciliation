@@ -1,0 +1,548 @@
+{
+  "Treaty": {
+    "name": "Treaty",
+    "fields": [
+      {
+        "name": "name",
+        "kind": "string",
+        "required": true
+      },
+      {
+        "name": "reinsurer",
+        "kind": "string",
+        "required": true
+      },
+      {
+        "name": "type",
+        "kind": "string",
+        "required": true
+      },
+      {
+        "name": "layer",
+        "kind": "string",
+        "required": true
+      },
+      {
+        "name": "limitUsd",
+        "kind": "number",
+        "required": true,
+        "min": 0
+      },
+      {
+        "name": "cessionPct",
+        "kind": "number",
+        "required": true
+      },
+      {
+        "name": "status",
+        "kind": "string",
+        "required": true
+      }
+    ]
+  },
+  "BordereauRecord": {
+    "name": "BordereauRecord",
+    "fields": [
+      {
+        "name": "period",
+        "kind": "string",
+        "required": true
+      },
+      {
+        "name": "kind",
+        "kind": "string",
+        "required": true
+      },
+      {
+        "name": "rowCount",
+        "kind": "number",
+        "required": true,
+        "integer": true,
+        "min": 0
+      },
+      {
+        "name": "fileRef",
+        "kind": "string",
+        "required": true
+      },
+      {
+        "name": "status",
+        "kind": "string",
+        "required": true
+      },
+      {
+        "name": "receivedAt",
+        "kind": "date",
+        "required": false
+      },
+      {
+        "name": "treatyId",
+        "kind": "string",
+        "required": false,
+        "relation": "Treaty"
+      }
+    ],
+    "parent": {
+      "field": "treatyId",
+      "entity": "Treaty"
+    }
+  },
+  "CededPremium": {
+    "name": "CededPremium",
+    "fields": [
+      {
+        "name": "period",
+        "kind": "string",
+        "required": true
+      },
+      {
+        "name": "grossWritten",
+        "kind": "number",
+        "required": true
+      },
+      {
+        "name": "cededAmount",
+        "kind": "number",
+        "required": true,
+        "min": 0
+      },
+      {
+        "name": "commission",
+        "kind": "number",
+        "required": true
+      },
+      {
+        "name": "currency",
+        "kind": "string",
+        "required": true
+      },
+      {
+        "name": "status",
+        "kind": "string",
+        "required": true
+      },
+      {
+        "name": "treatyId",
+        "kind": "string",
+        "required": false,
+        "relation": "Treaty"
+      }
+    ],
+    "parent": {
+      "field": "treatyId",
+      "entity": "Treaty"
+    }
+  },
+  "LossRecoverable": {
+    "name": "LossRecoverable",
+    "fields": [
+      {
+        "name": "claimRef",
+        "kind": "string",
+        "required": true
+      },
+      {
+        "name": "period",
+        "kind": "string",
+        "required": true
+      },
+      {
+        "name": "incurredLoss",
+        "kind": "number",
+        "required": true
+      },
+      {
+        "name": "recoverable",
+        "kind": "number",
+        "required": true
+      },
+      {
+        "name": "status",
+        "kind": "string",
+        "required": true
+      },
+      {
+        "name": "recognizedAt",
+        "kind": "date",
+        "required": false
+      },
+      {
+        "name": "treatyId",
+        "kind": "string",
+        "required": false,
+        "relation": "Treaty"
+      }
+    ],
+    "parent": {
+      "field": "treatyId",
+      "entity": "Treaty"
+    }
+  },
+  "CashCall": {
+    "name": "CashCall",
+    "fields": [
+      {
+        "name": "callRef",
+        "kind": "string",
+        "required": true
+      },
+      {
+        "name": "amount",
+        "kind": "number",
+        "required": true,
+        "min": 0
+      },
+      {
+        "name": "currency",
+        "kind": "string",
+        "required": true
+      },
+      {
+        "name": "status",
+        "kind": "string",
+        "required": true
+      },
+      {
+        "name": "issuedAt",
+        "kind": "date",
+        "required": false
+      },
+      {
+        "name": "settledAt",
+        "kind": "date",
+        "required": false
+      },
+      {
+        "name": "treatyId",
+        "kind": "string",
+        "required": false,
+        "relation": "Treaty"
+      }
+    ],
+    "parent": {
+      "field": "treatyId",
+      "entity": "Treaty"
+    }
+  },
+  "CollateralPosition": {
+    "name": "CollateralPosition",
+    "fields": [
+      {
+        "name": "reinsurer",
+        "kind": "string",
+        "required": true
+      },
+      {
+        "name": "instrument",
+        "kind": "string",
+        "required": true
+      },
+      {
+        "name": "requiredAmount",
+        "kind": "number",
+        "required": true,
+        "min": 0
+      },
+      {
+        "name": "heldAmount",
+        "kind": "number",
+        "required": true,
+        "min": 0
+      },
+      {
+        "name": "status",
+        "kind": "string",
+        "required": true
+      },
+      {
+        "name": "asOf",
+        "kind": "date",
+        "required": false
+      },
+      {
+        "name": "treatyId",
+        "kind": "string",
+        "required": false,
+        "relation": "Treaty"
+      }
+    ],
+    "parent": {
+      "field": "treatyId",
+      "entity": "Treaty"
+    }
+  },
+  "CommutationReview": {
+    "name": "CommutationReview",
+    "fields": [
+      {
+        "name": "proposalRef",
+        "kind": "string",
+        "required": true
+      },
+      {
+        "name": "analyst",
+        "kind": "string",
+        "required": true
+      },
+      {
+        "name": "settlementAmount",
+        "kind": "number",
+        "required": true,
+        "min": 0
+      },
+      {
+        "name": "status",
+        "kind": "string",
+        "required": true
+      },
+      {
+        "name": "proposedAt",
+        "kind": "date",
+        "required": false
+      },
+      {
+        "name": "rationale",
+        "kind": "string",
+        "required": false
+      },
+      {
+        "name": "treatyId",
+        "kind": "string",
+        "required": false,
+        "relation": "Treaty"
+      }
+    ],
+    "parent": {
+      "field": "treatyId",
+      "entity": "Treaty"
+    }
+  },
+  "ScheduleFEntry": {
+    "name": "ScheduleFEntry",
+    "fields": [
+      {
+        "name": "naicCode",
+        "kind": "string",
+        "required": true
+      },
+      {
+        "name": "reinsurerName",
+        "kind": "string",
+        "required": true
+      },
+      {
+        "name": "part",
+        "kind": "string",
+        "required": true
+      },
+      {
+        "name": "amount",
+        "kind": "number",
+        "required": true,
+        "min": 0
+      },
+      {
+        "name": "status",
+        "kind": "string",
+        "required": true
+      },
+      {
+        "name": "statementYear",
+        "kind": "string",
+        "required": true
+      },
+      {
+        "name": "treatyId",
+        "kind": "string",
+        "required": false,
+        "relation": "Treaty"
+      }
+    ],
+    "parent": {
+      "field": "treatyId",
+      "entity": "Treaty"
+    }
+  },
+  "ReinsurerCounterparty": {
+    "name": "ReinsurerCounterparty",
+    "fields": [
+      {
+        "name": "name",
+        "kind": "string",
+        "required": true
+      },
+      {
+        "name": "amBestRating",
+        "kind": "string",
+        "required": true
+      },
+      {
+        "name": "domicile",
+        "kind": "string",
+        "required": true
+      },
+      {
+        "name": "status",
+        "kind": "string",
+        "required": true
+      },
+      {
+        "name": "exposureLimit",
+        "kind": "number",
+        "required": true,
+        "min": 0
+      },
+      {
+        "name": "lastReview",
+        "kind": "date",
+        "required": false
+      },
+      {
+        "name": "treatyId",
+        "kind": "string",
+        "required": false,
+        "relation": "Treaty"
+      }
+    ],
+    "parent": {
+      "field": "treatyId",
+      "entity": "Treaty"
+    }
+  },
+  "DiscrepancyCase": {
+    "name": "DiscrepancyCase",
+    "fields": [
+      {
+        "name": "kind",
+        "kind": "string",
+        "required": true
+      },
+      {
+        "name": "expectedValue",
+        "kind": "string",
+        "required": true
+      },
+      {
+        "name": "reportedValue",
+        "kind": "string",
+        "required": true
+      },
+      {
+        "name": "variance",
+        "kind": "number",
+        "required": true
+      },
+      {
+        "name": "status",
+        "kind": "string",
+        "required": true
+      },
+      {
+        "name": "owner",
+        "kind": "string",
+        "required": true
+      },
+      {
+        "name": "treatyId",
+        "kind": "string",
+        "required": false,
+        "relation": "Treaty"
+      }
+    ],
+    "parent": {
+      "field": "treatyId",
+      "entity": "Treaty"
+    }
+  },
+  "SettlementPayment": {
+    "name": "SettlementPayment",
+    "fields": [
+      {
+        "name": "period",
+        "kind": "string",
+        "required": true
+      },
+      {
+        "name": "direction",
+        "kind": "string",
+        "required": true
+      },
+      {
+        "name": "amount",
+        "kind": "number",
+        "required": true,
+        "min": 0
+      },
+      {
+        "name": "currency",
+        "kind": "string",
+        "required": true
+      },
+      {
+        "name": "status",
+        "kind": "string",
+        "required": true
+      },
+      {
+        "name": "dueDate",
+        "kind": "date",
+        "required": false
+      },
+      {
+        "name": "treatyId",
+        "kind": "string",
+        "required": false,
+        "relation": "Treaty"
+      }
+    ],
+    "parent": {
+      "field": "treatyId",
+      "entity": "Treaty"
+    }
+  },
+  "TreatyTerm": {
+    "name": "TreatyTerm",
+    "fields": [
+      {
+        "name": "clause",
+        "kind": "string",
+        "required": true
+      },
+      {
+        "name": "category",
+        "kind": "string",
+        "required": true
+      },
+      {
+        "name": "text",
+        "kind": "string",
+        "required": true
+      },
+      {
+        "name": "version",
+        "kind": "string",
+        "required": true
+      },
+      {
+        "name": "status",
+        "kind": "string",
+        "required": true
+      },
+      {
+        "name": "effectiveDate",
+        "kind": "date",
+        "required": false
+      },
+      {
+        "name": "treatyId",
+        "kind": "string",
+        "required": false,
+        "relation": "Treaty"
+      }
+    ],
+    "parent": {
+      "field": "treatyId",
+      "entity": "Treaty"
+    }
+  }
+}

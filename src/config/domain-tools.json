@@ -1,0 +1,45 @@
+[
+  {
+    "id": "treaty-recovery",
+    "title": "Single-layer recoverable",
+    "description": "Calculate the recovery for a single loss and treaty layer. Reinstatement and aggregate provisions are explicitly excluded.",
+    "example": {
+      "lossCents": 150000,
+      "attachmentCents": 50000,
+      "limitCents": 80000,
+      "cessionPercent": 50,
+      "reinstatement": "none"
+    }
+  },
+  {
+    "id": "collateral",
+    "title": "Collateral coverage",
+    "description": "Compare required and eligible held collateral. Eligibility must be established from source documentation.",
+    "example": {
+      "requiredCents": 100000,
+      "heldCents": 75000
+    }
+  },
+  {
+    "id": "reconcile",
+    "title": "Ledger reconciliation",
+    "description": "Compare debits and credits using integer minor units in a single currency.",
+    "example": {
+      "currency": "USD",
+      "debits": [
+        {
+          "reference": "debit-1",
+          "cents": 10000,
+          "currency": "USD"
+        }
+      ],
+      "credits": [
+        {
+          "reference": "credit-1",
+          "cents": 10000,
+          "currency": "USD"
+        }
+      ]
+    }
+  }
+]
