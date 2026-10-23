@@ -8,6 +8,8 @@ import helmet from 'helmet';
 import jwt from 'jsonwebtoken';
 import pg from 'pg';
 import { mountOperationalRecordActions, recordPermissions } from './operationalRecordActions.mjs';
+import { mountTasks } from './tasks.mjs';
+import { filterRecords, recordsToCsv, buildInsights } from './featurePack.mjs';
 
 const backendRoot = path.dirname(fileURLToPath(import.meta.url));
 const projectRoot = path.dirname(backendRoot);
@@ -157,6 +159,7 @@ export function createApp() {
   });
   app.use('/api', auth);
   mountOperationalRecordActions(app, { pool, config, identifier, audit });
+  mountTasks(app, { pool, audit });
   app.get('/api/app', (req, res) => res.json({ ...config, user: req.user, ai: aiStatus() , recordPermissions: recordPermissions(req.user) }));
   app.get('/api/dashboard', async (_req, res) => {
     const [records, attention, recent, analyses] = await Promise.all([
@@ -209,7 +212,17 @@ export function createApp() {
   app.get('/api/workflows', (_req, res) => res.json({ items: config.workflows }));
   app.get('/api/records', async (req, res) => {
     const result = req.query.workflow ? await pool.query('SELECT * FROM workflow_cases WHERE workflow_id=$1 ORDER BY due_date', [req.query.workflow]) : await pool.query('SELECT * FROM workflow_cases ORDER BY due_date');
-    res.json({ items: result.rows });
+    res.json({ items: filterRecords(result.rows, req.query) });
+  });
+  app.get('/api/records/export', async (req, res) => {
+    const result = await pool.query('SELECT * FROM workflow_cases ORDER BY due_date');
+    const rows = filterRecords(result.rows, req.query);
+    if (String(req.query.format || 'csv').toLowerCase() === 'json') return res.json({ items: rows });
+    return res.type('text/csv').set('Content-Disposition', 'attachment; filename="bordereaux-records.csv"').send(recordsToCsv(rows));
+  });
+  app.get('/api/records/insights', async (req, res) => {
+    const result = await pool.query('SELECT * FROM workflow_cases ORDER BY due_date');
+    res.json(buildInsights(filterRecords(result.rows, req.query), { id: 'bordereaux', title: 'Bordereaux treaty reconciliation' }));
   });
   app.get('/api/operations', (_req, res) => res.json({ items: config.operations }));
   app.get('/api/operation-records', async (req, res) => {
